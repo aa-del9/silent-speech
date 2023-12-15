@@ -58,7 +58,7 @@ class GestureRecognizerHelper(
             }
         }
 
-        baseOptionBuilder.setModelAssetPath(MP_RECOGNIZER_TASK)
+        baseOptionBuilder.setModelAssetPath(RECOGNIZER_TASK)
 
         try {
             val baseOptions = baseOptionBuilder.build()
@@ -84,7 +84,7 @@ class GestureRecognizerHelper(
             )
             Log.e(
                 TAG,
-                "MP Task Vision failed to load the task with error: " + e.message
+                "Task Vision failed to load the task with error: " + e.message
             )
         } catch (e: RuntimeException) {
             gestureRecognizerListener?.onError(
@@ -93,7 +93,7 @@ class GestureRecognizerHelper(
             )
             Log.e(
                 TAG,
-                "MP Task Vision failed to load the task with error: " + e.message
+                "Task Vision failed to load the task with error: " + e.message
             )
         }
     }
@@ -306,7 +306,7 @@ class GestureRecognizerHelper(
 
     companion object {
         val TAG = "GestureRecognizerHelper ${this.hashCode()}"
-        private const val MP_RECOGNIZER_TASK = "gesture_recognizer.task"
+        private const val RECOGNIZER_TASK = "gesture_recognizer.task"
 
         const val DELEGATE_CPU = 0
         const val DELEGATE_GPU = 1

@@ -42,7 +42,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         linePaint.strokeWidth = LANDMARK_STROKE_WIDTH
         linePaint.style = Paint.Style.STROKE
 
-        pointPaint.color = Color.YELLOW
+        pointPaint.color = Color.RED
         pointPaint.strokeWidth = LANDMARK_STROKE_WIDTH
         pointPaint.style = Paint.Style.FILL
     }
@@ -108,7 +108,7 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
     }
 
     companion object {
-        private const val LANDMARK_STROKE_WIDTH = 8F
+        private const val LANDMARK_STROKE_WIDTH = 20F
         private const val HAND_CONNECTION_STROKE_WIDTH = 12F  // Define the width for hand connections
     }
 }
