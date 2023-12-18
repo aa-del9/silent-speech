@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             app:itemIconTint="@color/bg_nav_item"
             app:itemTextColor="@color/bg_nav_item"
+            android:background="#703FB5"
             app:menu="@menu/menu_bottom_nav" />
 
         <View
@@ -37,5 +38,15 @@
             android:layout_height="1dp"
             android:layout_below="@id/navigation"
             android:background="@android:color/darker_gray" />
+
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?android:attr/actionBarSize"
+            android:background="@drawable/rounded_toolbar_background"
+            android:layout_alignParentBottom="true"
+            android:theme="?attr/actionBarTheme" />
+
     </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
