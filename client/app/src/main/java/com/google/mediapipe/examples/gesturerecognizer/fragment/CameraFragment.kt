@@ -8,6 +8,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
+import android.widget.Button
+import android.widget.ImageView
 import android.widget.Toast
 import androidx.camera.core.*
 import androidx.camera.lifecycle.ProcessCameraProvider
@@ -116,7 +118,12 @@ class CameraFragment : Fragment(),
             layoutManager = LinearLayoutManager(requireContext())
             adapter = gestureRecognizerResultAdapter
         }
+        val switchCameraButton: ImageView = view.findViewById(R.id.imgSwitchCamera)
 
+        // Set up a click listener
+        switchCameraButton.setOnClickListener {
+            switchCamera()
+        }
         // Initialize our background executor
         backgroundExecutor = Executors.newSingleThreadExecutor()
 
@@ -155,6 +162,22 @@ class CameraFragment : Fragment(),
             }, ContextCompat.getMainExecutor(requireContext())
         )
     }
+    // Inside the CameraFragment class
+    private fun switchCamera() {
+        // Toggle between front and back cameras
+        cameraFacing = if (cameraFacing == CameraSelector.LENS_FACING_FRONT) {
+            CameraSelector.LENS_FACING_BACK
+        } else {
+            CameraSelector.LENS_FACING_FRONT
+        }
+
+        // Update the isCameraFrontFacing value in OverlayView
+        fragmentCameraBinding.overlay.updateCameraFrontFacing(cameraFacing == CameraSelector.LENS_FACING_FRONT)
+
+        // Rebind the camera use cases with the new camera facing
+        bindCameraUseCases()
+    }
+
 
     // Declare and bind preview, capture and analysis use cases
     @SuppressLint("UnsafeOptInUsageError")
@@ -202,6 +225,9 @@ class CameraFragment : Fragment(),
             Log.e(TAG, "Use case binding failed", exc)
         }
     }
+
+
+
 
     private fun recognizeHand(imageProxy: ImageProxy) {
         gestureRecognizerHelper.recognizeLiveStream(

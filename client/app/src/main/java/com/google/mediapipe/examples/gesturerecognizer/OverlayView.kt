@@ -20,6 +20,12 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
     private var linePaint = Paint()
     private var pointPaint = Paint()
 
+    private var isCameraFrontFacing: Boolean = true
+        set(value) {
+            field = value
+            invalidate()
+        }
+
     private var scaleFactor: Float = 1f
     private var imageWidth: Int = 1
     private var imageHeight: Int = 1
@@ -52,15 +58,21 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
         results?.let { gestureRecognizerResult ->
             for (landmark in gestureRecognizerResult.landmarks()) {
                 for (normalizedLandmark in landmark) {
+                    val x: Float
+                    if (isCameraFrontFacing) {
+                        x = normalizedLandmark.x() * imageWidth * scaleFactor
+                    } else {
+                        x = (1 - normalizedLandmark.x()) * imageWidth * scaleFactor
+                    }
+
                     canvas.drawPoint(
-                        normalizedLandmark.x() * imageWidth * scaleFactor,
+                        x,
                         normalizedLandmark.y() * imageHeight * scaleFactor,
                         pointPaint
                     )
                 }
 
                 // Draw hand connections with a different color and thicker stroke
-                // Change this line in your draw method
                 linePaint.color = ContextCompat.getColor(context!!, R.color.accent_color)
                 linePaint.strokeWidth = HAND_CONNECTION_STROKE_WIDTH
 
@@ -68,10 +80,21 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                     val startLandmark = gestureRecognizerResult.landmarks().get(0).get(it!!.start())
                     val endLandmark = gestureRecognizerResult.landmarks().get(0).get(it.end())
 
+                    val startX: Float
+                    val endX: Float
+
+                    if (isCameraFrontFacing) {
+                        startX = startLandmark.x() * imageWidth * scaleFactor
+                        endX = endLandmark.x() * imageWidth * scaleFactor
+                    } else {
+                        startX = (1 - startLandmark.x()) * imageWidth * scaleFactor
+                        endX = (1 - endLandmark.x()) * imageWidth * scaleFactor
+                    }
+
                     canvas.drawLine(
-                        startLandmark.x() * imageWidth * scaleFactor,
+                        startX,
                         startLandmark.y() * imageHeight * scaleFactor,
-                        endLandmark.x() * imageWidth * scaleFactor,
+                        endX,
                         endLandmark.y() * imageHeight * scaleFactor,
                         linePaint
                     )
@@ -79,7 +102,6 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
             }
         }
     }
-
 
     fun setResults(
         gestureRecognizerResult: GestureRecognizerResult,
@@ -98,17 +120,16 @@ class OverlayView(context: Context?, attrs: AttributeSet?) :
                 min(width * 1f / imageWidth, height * 1f / imageHeight)
             }
             RunningMode.LIVE_STREAM -> {
-                // PreviewView is in FILL_START mode. So we need to scale up the
-                // landmarks to match with the size that the captured images will be
-                // displayed.
                 max(width * 1f / imageWidth, height * 1f / imageHeight)
             }
         }
         invalidate()
     }
-
+    fun updateCameraFrontFacing(frontFacing: Boolean) {
+        isCameraFrontFacing = frontFacing
+    }
     companion object {
         private const val LANDMARK_STROKE_WIDTH = 20F
-        private const val HAND_CONNECTION_STROKE_WIDTH = 12F  // Define the width for hand connections
+        private const val HAND_CONNECTION_STROKE_WIDTH = 12F
     }
 }

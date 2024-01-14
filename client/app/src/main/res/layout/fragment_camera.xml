@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/camera_container"
     android:layout_width="match_parent"
@@ -29,7 +29,7 @@
         app:layout_anchorGravity="top"
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
-    <!-- Optional divider view -->
+
 
     <View
         android:layout_width="wrap_content"
@@ -38,4 +38,15 @@
         app:layout_anchor="@id/recyclerview_results"
         app:layout_anchorGravity="bottom" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+    <!-- ImageView in the bottom right corner -->
+    <ImageView
+        android:id="@+id/imgSwitchCamera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/camera_switch_foreground"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="44dp"
+         />
+
+</RelativeLayout>
